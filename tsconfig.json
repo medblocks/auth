@@ -9,7 +9,7 @@
     ],
     "outDir": "./lib",
     "rootDir": "./src",
-    "strict": true,
+    "strict": false,
     "typeRoots": [
       "./typings"
     ],

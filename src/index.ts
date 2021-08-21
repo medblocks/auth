@@ -17,13 +17,28 @@ import * as https from 'https'
 import * as fs from 'fs'
 import protectSimple from './middleware/simple'
 import protectOathkeeper from './middleware/oathkeeper'
+import csrf from 'csurf'
+import hydraLogin from './routes/hydraLogin'
+import session from 'express-session'
+import { hydraGetConsent, hydraPostConsent } from './routes/hydraConsent'
+import bodyParser from 'body-parser'
 
 export const protect =
   config.securityMode === SECURITY_MODE_JWT ? protectOathkeeper : protectSimple
 
+const csrfProtection = csrf({ cookie: true })
+
 const app = express()
 app.use(morgan('tiny'))
 app.use(cookieParser())
+app.use(
+  session({
+    secret: 'secretMustChangeThis',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: config.https.enabled },
+  })
+)
 app.set('view engine', 'hbs')
 
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -83,14 +98,29 @@ if (process.env.NODE_ENV === 'stub') {
   app.get('/settings', protect, settingsHandler)
   app.get('/verify', verifyHandler)
   app.get('/recovery', recoveryHandler)
+  app.get('/hydralogin', csrfProtection, hydraLogin)
+  app.get(
+    '/hydraconsent',
+    protect,
+    csrfProtection,
+    hydraGetConsent,
+    errorHandler
+  )
+  app.post(
+    '/hydraconsent',
+    protect,
+    bodyParser.urlencoded({ extended: true }),
+    csrfProtection,
+    hydraPostConsent
+  )
 }
 
 app.get('/health', (_: Request, res: Response) => res.send('ok'))
 app.get('/debug', debug)
 
-app.get('*', (_: Request, res: Response) => {
-  res.redirect(config.baseUrl)
-})
+// app.get('*', (_: Request, res: Response) => {
+//   res.redirect(config.baseUrl)
+// })
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack)
@@ -98,6 +128,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     message: JSON.stringify(err, null, 2),
   })
 })
+
+
 
 const port = Number(process.env.PORT) || 3000
 
