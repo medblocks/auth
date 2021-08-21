@@ -46,10 +46,13 @@ const redirectToLogin = (req: Request, res: Response, next: NextFunction) => {
     // prot: `${req.protocol}://${req.headers.host}`,
     // 'kratos.browser': config.kratos.browser,
     // })
+    const query = url.parse(req.url, true).query
+
+    // The challenge is used to fetch information about the login request from ORY Hydra.
+    const challenge = String(query.login_challenge)
     const returnTo = new URL('/postLogin', 'http://127.0.0.1:4455')
     returnTo.searchParams.set('hydra_login_state', state)
-
-
+    returnTo.searchParams.set('login_challenge', challenge)
     const redirectTo = new URL(
       'http://127.0.0.1:4433' + '/self-service/login/browser'
     )
@@ -61,9 +64,40 @@ const redirectToLogin = (req: Request, res: Response, next: NextFunction) => {
   })
 }
 
-export default (req: Request, res: Response, next: NextFunction) => {
+export const postLogin = async (req: Request, res: Response, next: NextFunction) => {
   const query = url.parse(req.url, true).query
 
+  // The challenge is used to fetch information about the login request from ORY Hydra.
+  
+  //TODO Need to figure out way to get remember_me state from login.
+
+  const challenge = String(query.login_challenge)
+  const kratosSessionCookie = req.cookies.ory_kratos_session
+  if (!kratosSessionCookie) {
+    console.log("No Kratos Cookie found")
+    return redirectToLogin(req, res, next)
+  }
+  const hydraLoginState = req.query.hydra_login_state
+  req.headers['host'] = config.kratos.public.split('/')[2]
+  if (hydraLoginState !== req.session.hydraLoginState) {
+    console.log("Login state not equal to one previously set")
+    console.log(req.session.hydraLoginState)
+    return redirectToLogin(req, res, next)
+  }
+  try {
+    const session = await kratos.toSession(undefined, req.header('Cookie'))
+    console.log({ session })
+    const { data } = session
+    const hydraResponse = await hydraAdmin.acceptLoginRequest(challenge, { subject: data.id, context: data.identity })
+    return res.redirect(hydraResponse.data.redirect_to)
+  }
+  catch (e) {
+    next(e)
+  }
+
+}
+export default (req: Request, res: Response, next: NextFunction) => {
+  const query = url.parse(req.url, true).query
   // The challenge is used to fetch information about the login request from ORY Hydra.
   const challenge = String(query.login_challenge)
   if (!challenge) {
@@ -91,29 +125,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
             // All we need to do now is to redirect the user back to hydra!
             res.redirect(String(body.redirect_to))
           })
-      }
-
-      const kratosSessionCookie = req.cookies.ory_kratos_session
-      if (!kratosSessionCookie) {
-        console.log("No Kratos Cookie found")
+      } else {
         return redirectToLogin(req, res, next)
-      }
-      const hydraLoginState = req.query.hydra_login_state
-      req.headers['host'] = config.kratos.public.split('/')[2]
-      if (hydraLoginState !== req.session.hydraLoginState) {
-        console.log("Login state not equal to one previously set")
-        console.log(req.session.hydraLoginState)
-        return redirectToLogin(req, res, next)
-      }
-      try {
-        const session = await kratos.toSession(undefined, req.header('Cookie'))
-        console.log({ session })
-        const { data } = session
-        const hydraResponse = await hydraAdmin.acceptLoginRequest(challenge, { subject: data.id, context: data.identity })
-        return res.redirect(hydraResponse.data.redirect_to)
-      }
-      catch (e) {
-        next(e)
       }
 
       // If authentication can't be skipped we MUST show the login UI.
