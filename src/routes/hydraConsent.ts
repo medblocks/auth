@@ -41,7 +41,7 @@ export const hydraGetConsent = (
                 // You can apply logic here, for example grant another scope, or do whatever...
 
                 // Now it's time to grant the consent request. You could also deny the request if something went terribly wrong
-                console.log(body.context)
+
                 const acceptConsentRequest = {
                     grant_scope: body.requested_scope,
                     grant_access_token_audience: body.requested_access_token_audience,
@@ -68,14 +68,18 @@ export const hydraGetConsent = (
             }
 
             // If consent can't be skipped we MUST show the consent UI.
+            const context = body.context as any
+            const name = context?.traits?.name?.first
+            console.log(body.context)
+            console.log({ body })
             res.render('consent', {
                 csrfToken: req.csrfToken(),
                 challenge: challenge,
                 // We have a bunch of data available from the response, check out the API docs to find what these values mean
                 // and what additional data you have available.
                 requested_scope: body.requested_scope,
-                user: body.subject,
-                client: body.client,
+                user: name,
+                client: body.client?.client_name || body.client?.client_id,
             })
         })
         // This will handle any error that happens when making HTTP calls to hydra

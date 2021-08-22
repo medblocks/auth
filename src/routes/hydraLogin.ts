@@ -68,7 +68,7 @@ export const postLogin = async (req: Request, res: Response, next: NextFunction)
   const query = url.parse(req.url, true).query
 
   // The challenge is used to fetch information about the login request from ORY Hydra.
-  
+
   //TODO Need to figure out way to get remember_me state from login.
 
   const challenge = String(query.login_challenge)
@@ -86,9 +86,8 @@ export const postLogin = async (req: Request, res: Response, next: NextFunction)
   }
   try {
     const session = await kratos.toSession(undefined, req.header('Cookie'))
-    console.log({ session })
     const { data } = session
-    const hydraResponse = await hydraAdmin.acceptLoginRequest(challenge, { subject: data.id, context: data.identity })
+    const hydraResponse = await hydraAdmin.acceptLoginRequest(challenge, { subject: data.identity.id, context: data.identity })
     return res.redirect(hydraResponse.data.redirect_to)
   }
   catch (e) {
