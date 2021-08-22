@@ -13,7 +13,7 @@ const createHydraSession = (
 ) => {
     return {
         id_token: {
-            username: 'someId'
+            userdata: context
         }
     }
 }
@@ -41,6 +41,7 @@ export const hydraGetConsent = (
                 // You can apply logic here, for example grant another scope, or do whatever...
 
                 // Now it's time to grant the consent request. You could also deny the request if something went terribly wrong
+                console.log(body.context)
                 const acceptConsentRequest = {
                     grant_scope: body.requested_scope,
                     grant_access_token_audience: body.requested_access_token_audience,
@@ -93,8 +94,6 @@ export const hydraPostConsent = (
     if (req.body.submit !== 'Allow access') {
         // Looks like the consent request was denied by the user
         const rejectConsentRequest = { error: 'access_denied', error_description: 'The resource owner denied the request' } as any
-
-
 
         return (
             hydraAdmin
