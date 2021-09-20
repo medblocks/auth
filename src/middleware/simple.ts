@@ -7,12 +7,12 @@
 //
 //   app.get("/dashboard", protect, (req, res) => { /* ... */ })
 
-import { Configuration, V0alpha1Api } from '@ory/kratos-client'
+import { Configuration, V0alpha2Api } from '@ory/kratos-client'
 import config from '../config'
 import { NextFunction, Request, Response } from 'express'
 import urljoin from 'url-join'
 
-const kratos = new V0alpha1Api(
+const kratos = new V0alpha2Api(
   new Configuration({ basePath: config.kratos.public })
 )
 
@@ -22,7 +22,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
     .then(({ data: session }) => {
       // `whoami` returns the session or an error. We're changing the type here
       // because express-session is not detected by TypeScript automatically.
-      ;(req as Request & { user: any }).user = { session }
+      ; (req as Request & { user: any }).user = { session }
       next()
     })
     .catch(() => {

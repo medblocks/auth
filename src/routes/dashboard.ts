@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import { Configuration, V0alpha1Api } from '@ory/kratos-client'
+import { Configuration, V0alpha2Api } from '@ory/kratos-client'
 import jd from 'jwt-decode'
 import config from '../config'
 
 // Uses the ORY Kratos NodeJS SDK:
-const kratos = new V0alpha1Api(
+const kratos = new V0alpha2Api(
   new Configuration({ basePath: config.kratos.public })
 )
 
@@ -68,12 +68,12 @@ export default async (req: Request, res: Response) => {
     headers: `GET ${req.path} HTTP/1.1
 
 ${interestingHeaders
-  .filter((header: string) =>
-    /User-Agent|Authorization|Content-Type|Host|Accept-Encoding|Accept-Language|Cookie|Connection|X-Forwarded-For/.test(
-      header
-    )
-  )
-  .join('\n')}
+        .filter((header: string) =>
+          /User-Agent|Authorization|Content-Type|Host|Accept-Encoding|Accept-Language|Cookie|Connection|X-Forwarded-For/.test(
+            header
+          )
+        )
+        .join('\n')}
 ...`,
   })
 }

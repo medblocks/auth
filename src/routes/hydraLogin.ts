@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import url from 'url'
 import { AdminApi, Configuration } from '@oryd/hydra-client'
-import { Configuration as KratosConfig, V0alpha1Api } from '@ory/kratos-client'
+import { Configuration as KratosConfig, V0alpha2Api } from '@ory/kratos-client'
 import crypto from 'crypto'
 import config from '../config'
 
@@ -11,7 +11,7 @@ const hydraAdmin = new AdminApi(
   })
 )
 
-const kratos = new V0alpha1Api(
+const kratos = new V0alpha2Api(
   new KratosConfig({ basePath: config.kratos.public })
 )
 
