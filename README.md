@@ -1,5 +1,25 @@
-# ORY Kratos ExpressJS Self-Service UI Reference
+# Medblocks Oauth Stack
+This repo acts as a gateway between other applications and other Medblocks Stack services like the openEHR and FHIR API. The authentication is done via OAuth2.0 using ORY Hydra. The users are stored on ORY Kratos.
 
+
+## Steps
+Replace the docker image names in the docker-compose.yml. I've changed them since I'm on a M1 mac.
+
+1. `docker-compose up`
+2. `npm install`
+3. `npm start`
+4. `./HydraFlow.sh` (or copy and paste commands if on windows)
+
+This will open a prompt. Log in with the prompt. New users can also be created using Kratos.
+
+## Todo
+
+- Change UI and make align it more with Medblocks theme
+- Automatically create a user on FHIR Resource PUT/POST (Patient/Practitioner) creation. Send invite mail to email.
+- Disable register user on Kratos
+
+
+# Original Documentation
 [![CircleCI](https://circleci.com/gh/ory/kratos-selfservice-ui-node.svg?style=badge)](https://circleci.com/gh/ory/kratos-selfservice-ui-node)
 
 This is an exemplary Self Service UI for [ORY Kratos](https://github.com/ory/kratos) Self Service features:
