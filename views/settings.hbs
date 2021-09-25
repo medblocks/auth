@@ -1,21 +1,19 @@
-<div class="content">
+<div class="content setting">
   {{> header}}
   <div class="container" id="settings">
-    <h2>Settings</h2>
-
+    {{!-- <h2>Settings</h2> --}}
+{{!-- <h3 style="margin-top:-60px">Settings</h3> --}}
     {{> messages messages=messages className="global" }}
 
     <form action="{{ui.action}}" method="{{ui.method}}">
       {{> messages messages=ui.messages }}
 
       {{> ui_nodes nodes=ui.nodes only="default" }}
-
-      <p>Profile</p>
       {{> ui_nodes nodes=ui.nodes only="profile" }}
 
       {{#if (onlyNodes ui.nodes "password")}}
-        <hr class="divider">
-        <p>Password</p>
+        {{!-- <hr class="divider"> --}}
+      
         {{> ui_nodes nodes=ui.nodes only="password" }}
       {{/if}}
 

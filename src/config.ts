@@ -34,6 +34,9 @@ switch ((process.env.SECURITY_MODE || '').toLowerCase()) {
 // },
 
 export default {
+  hydra:{
+    admin: (process.env.HYDRA_ADMIN_URL || '').replace(/\/+$/, ''),
+  },
   kratos: {
     browser: browserUrl.replace(/\/+$/, ''),
     admin: (process.env.KRATOS_ADMIN_URL || '').replace(/\/+$/, ''),

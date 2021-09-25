@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express"
 import { AdminApi, Configuration } from '@oryd/hydra-client'
-
+import config from '../config'
 const hydraAdmin = new AdminApi(
     new Configuration({
-        basePath: 'http://127.0.0.1:4445',
+        basePath: config.hydra.admin
     })
 )
 
