@@ -78,6 +78,7 @@ fieldset .input-form-messages, .form-messages {
 form .messages {
     margin: .15em 0 .25em 0;
     padding: 0;
+    color:var(--base-black);
 }
 
 fieldset .input-form-messages .info,

@@ -1,6 +1,6 @@
 .auth {
     min-height: 100vh;
-    color: var(--primary-light);
+    color: var(--base-black);
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -204,6 +204,7 @@ h4 ~ h5 {
 .messages {
     margin-bottom: 1rem;
     padding: 0 0.25rem;
+    color:var(--base-black)
 }
 
 .divider {
@@ -216,4 +217,8 @@ h4 ~ h5 {
 }
 #recovery button{
     width:100px
+}
+
+.message .error{
+    color: var(--base-black);
 }
