@@ -4,10 +4,10 @@ serve:
 
 urls:
   self:
-    issuer: http://127.0.0.1:4444
-  consent: http://127.0.0.1:4455/hydraconsent
-  login: http://127.0.0.1:4455/hydralogin
-  logout: http://127.0.0.1:4455/hydra/logout
+    issuer: http://143.110.254.8:4444
+  consent: http://143.110.254.8:4455/hydraconsent
+  login: http://143.110.254.8:4455/hydralogin
+  logout: http://143.110.254.8:4455/hydra/logout
 
 secrets:
   system:

@@ -96,18 +96,6 @@ services:
       - '4437:4437'
     networks:
       - intranet
-  medblocksauth:
-    image: athulknair123/medblocks-auth
-    ports:
-      -  '4455:3000'
-    environment:
-      - KRATOS_PUBLIC_URL=http://kratos:4433
-      - KRATOS_ADMIN_URL=http://kratos:4434
-      - KRATOS_BROWSER_URL=http://127.0.0.1:4433
-      - BASE_URL=http://127.0.0.1:4455
-      - HYDRA_ADMIN_URL=http://hydra:4445
-    networks:
-      - intranet
 
 networks:
   intranet:
