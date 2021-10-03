@@ -4,12 +4,8 @@ services:
   kratos-migrate:
     image: kratos
     environment:
-      - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true&mode=rwc
+      - DSN=postgres://kratos:kratos@postgresd:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
     volumes:
-      - type: volume
-        source: kratos-sqlite
-        target: /var/lib/sqlite
-        read_only: false
       - type: bind
         source: ./kratos
         target: /etc/config/kratos
@@ -27,14 +23,10 @@ services:
       - '4434:4434' # admin
     restart: unless-stopped
     environment:
-      - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true
+      - DSN=postgres://kratos:kratos@postgresd:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
       - LOG_LEVEL=trace
     command: serve -c /etc/config/kratos/kratos.yml --dev --watch-courier
     volumes:
-      - type: volume
-        source: kratos-sqlite
-        target: /var/lib/sqlite
-        read_only: false
       - type: bind
         source: ./kratos
         target: /etc/config/kratos
@@ -60,16 +52,11 @@ services:
       serve -c /etc/config/hydra/hydra.yml all --dangerous-force-http
     volumes:
       -
-        type: volume
-        source: hydra-sqlite
-        target: /var/lib/sqlite
-        read_only: false
-      -
         type: bind
         source: ./hydra
         target: /etc/config/hydra
     environment:
-      - DSN=postgres://hydra:secret@postgresd:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+      - DSN=postgres://hydra:hydra@postgresd:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
     restart: unless-stopped
     depends_on:
       - hydra-migrate
@@ -79,15 +66,10 @@ services:
   hydra-migrate:
     image: hydra
     environment:
-      - DSN=postgres://hydra:secret@postgresd:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+      - DSN=postgres://hydra:hydra@postgresd:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
     command:
       migrate -c /etc/config/hydra/hydra.yml sql -e --yes
     volumes:
-      -
-        type: volume
-        source: hydra-sqlite
-        target: /var/lib/sqlite
-        read_only: false
       -
         type: bind
         source: ./hydra
@@ -101,9 +83,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=hydra
-      - POSTGRES_PASSWORD=secret
-      - POSTGRES_DB=hydra
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - intranet
     
@@ -117,7 +99,3 @@ services:
 
 networks:
   intranet:
-
-volumes:
-  kratos-sqlite:
-  hydra-sqlite:
