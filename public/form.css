@@ -16,7 +16,10 @@ form fieldset {
 form label {
     position: relative;
 }
+form span{
+    color: var(--base-black);
 
+}
 form label span {
     position: absolute;
     color: var(--base-text);
@@ -55,11 +58,11 @@ form button:hover {
 }
 
 form label input {
-    border-radius: 0.166em;
-    background-color: var(--base-black);
-    border-width: 0;
-    color: var(--base-white);
-    padding: 0.875em 0.666em;
+    border-radius: 0.566em;
+    background-color: var(--primary-light);
+    border-width: 1px;
+    color: var(--base-black);
+    padding: 0.575em 0.666em;
     font-size: inherit;
     line-height: 168%;
     width: 100%;
@@ -75,6 +78,7 @@ fieldset .input-form-messages, .form-messages {
 form .messages {
     margin: .15em 0 .25em 0;
     padding: 0;
+    color:var(--base-black);
 }
 
 fieldset .input-form-messages .info,
@@ -89,8 +93,9 @@ form input::placeholder {
 }
 
 .password-visibility-toggle path {
-    fill: var(--base-white);
+    fill: var(--base-dark);
 }
+
 
 .password-visibility-toggle {
     position: absolute;

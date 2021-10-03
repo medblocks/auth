@@ -1,9 +1,24 @@
 .auth {
     min-height: 100vh;
-    color: var(--primary-light);
+    color: var(--base-black);
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background-color: var(--base-white);
+   
+}
+
+.auth #login    {
+    border: 1px black solid;
+    border-radius: 10px;
+    padding:40px 80px 60px;
+}
+
+.auth #consent{
+    border: 1px black solid;
+    border-radius: 10px;
+    padding:40px 80px 60px;
+    color:var(--base-black)
 }
 
 .auth .subheading {
@@ -13,15 +28,16 @@
 }
 
 .auth a {
-    color: var(--base-text);
+    color: var(--base-black);
     transition: color 0.1s ease-in-out;
 }
 
 .auth a:hover {
-    color: var(--base-white);
+    color: var(--base-text);
 }
 
 .auth .alternative-actions {
     display: flex;
     justify-content: space-between;
+    margin-top: 2rem;
 }

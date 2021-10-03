@@ -27,6 +27,6 @@ export default (req: Request, res: Response, next: NextFunction) => {
     })
     .catch(() => {
       // If no session is found, redirect to login.
-      res.redirect(urljoin(config.baseUrl, '/hydraLogin'))
+      res.redirect(urljoin(config.baseUrl, '/login'))
     })
 }

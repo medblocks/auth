@@ -23,8 +23,8 @@ html, body {
 body {
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 16px;
-    color: var(--base-light);
-    background: var(--base-dark);
+    color: var(--base-black);
+    background: var(--base-white);
 }
 
 .container {
@@ -56,33 +56,41 @@ body {
     line-height: 160%;
 }
 
+/* .setting .header{
+    margin-top: -1rem ;
+} */
 .content .header {
-    padding: 1.666rem 11.5rem;
+    /* background-color: #95E1F9; */
+    padding: 0.666rem 11.5rem;
     display: flex;
     box-sizing: border-box;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid var(--primary-main);
+    /* border-bottom: 1px solid var(--primary-main); */
 }
 
 .content .header .icon-actions > div {
     display: inline;
-    margin: 0 0.5rem;
+    margin: 0 1rem;
 }
 
-.content .header .icon-actions .fork path {
-    fill: var(--primary-main);
+.content .header .icon-actions .fork path,
+.content .header .icon-actions .logout path,
+.content .header .icon-actions .settings path  {
+    fill: var(--base-black);
     transition: fill 0.1s ease-in-out;
 }
 
-.content .header .icon-actions .fork:hover path {
-    fill: var(--primary-light);
+.content .header .icon-actions .fork:hover path,
+.content .header .icon-actions .settings:hover path ,
+.content .header .icon-actions .logout:hover path {
+    fill: var(--base-text);
 }
 
 .content .header .icon-actions .fork a,
 .content .header .icon-actions .fork a:visited {
-    color: var(--primary-main);
+    color: var(--primary-half);
     text-decoration: none;
     transition: color 0.1s ease-in-out;
     font-size: 0.666em;
@@ -91,10 +99,7 @@ body {
 
 .content .header .icon-actions .fork a div {
     display: inline-block;
-}
-
-.content .header .icon-actions .fork a:hover {
-    color: var(--primary-light);
+    color: var(--base-black);
 }
 
 .content .header .logo {
@@ -104,14 +109,14 @@ body {
 
 .content .header .logout a,
 .content .header .logout a:link {
-    color: white;
+    color: var(--primary-main);
     text-decoration: none;
     transition: ease 200ms;
 }
 
 .content .header .logout a:hover,
 .content .header .logout a:active {
-    color: var(--primary-light);
+    color: var(--primary-main);
 }
 
 .content .container {
@@ -131,6 +136,16 @@ h4 ~ h5 {
 
 .content .greeting .user-identifier {
     color: var(--primary-main);
+}
+
+.content #recovery{
+    /* margin-top: 10rem ; */
+    border: 1px black solid;
+    border-radius: 10px;
+    padding:40px 80px 60px;
+}
+.content #settings{
+   margin-top: 10px;
 }
 
 .container pre {
@@ -189,10 +204,21 @@ h4 ~ h5 {
 .messages {
     margin-bottom: 1rem;
     padding: 0 0.25rem;
+    color:var(--base-black)
 }
 
 .divider {
     width: 100%;
     border-color: var(--base-main);
     margin: 1.5rem 0;
+}
+ #settings  button{
+    width:100px
+}
+#recovery button{
+    width:100px
+}
+
+.message .error{
+    color: var(--base-black);
 }
