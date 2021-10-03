@@ -2,7 +2,7 @@
     <div class="container" id="consent">
         {{> icon_logo}}
         {{!-- <h5 class="subheading">Welcome to the example consent page!</h5> --}}
-        <form action="/hydraconsent" method="POST">
+        <form action="{{action}}" method="POST">
             <p style="margin-bottom: 15px">Hi {{user}}, <strong>{{client}}</strong> wants access
                 resources on your behalf and to:</p>
 

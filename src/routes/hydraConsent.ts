@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express"
 import { AdminApi, Configuration } from '@oryd/hydra-client'
-
+import config from '../config'
 const hydraAdmin = new AdminApi(
     new Configuration({
-        basePath: 'http://127.0.0.1:4445',
+        basePath: config.hydra.admin
     })
 )
 
@@ -28,6 +28,7 @@ export const hydraGetConsent = (
     const challenge = req.query.consent_challenge as string
 
     if (!challenge) {
+        console.error("Expected consent_challenge to be set")
         next(new Error('Expected consent_challenge to be set.'))
         return
     }
@@ -75,6 +76,7 @@ export const hydraGetConsent = (
             res.render('consent', {
                 csrfToken: req.csrfToken(),
                 challenge: challenge,
+                action: config.baseUrl + "/hydraconsent",
                 // We have a bunch of data available from the response, check out the API docs to find what these values mean
                 // and what additional data you have available.
                 requested_scope: body.requested_scope,

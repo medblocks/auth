@@ -29,6 +29,10 @@ export const protect =
 const csrfProtection = csrf({ cookie: true })
 
 const app = express()
+
+app.locals.logoUrl = config.logoUrl
+
+
 app.use(morgan('tiny'))
 app.use(cookieParser())
 app.use(

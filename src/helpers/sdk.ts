@@ -11,6 +11,7 @@ export const redirectOnSoftError = (
   next: NextFunction,
   redirectTo: string
 ) => (err: AxiosError) => {
+
   if (!err.response) {
     next(err)
     return
@@ -21,6 +22,7 @@ export const redirectOnSoftError = (
     err.response.status === 410 ||
     err.response.status === 403
   ) {
+    console.trace("redirecting on oft error!")
     res.redirect(`${config.kratos.browser}${redirectTo}`)
     return
   }

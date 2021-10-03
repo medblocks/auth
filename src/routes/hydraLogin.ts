@@ -7,7 +7,7 @@ import config from '../config'
 
 const hydraAdmin = new AdminApi(
   new Configuration({
-    basePath: 'http://127.0.0.1:4445',
+    basePath: config.hydra.admin,
   })
 )
 
@@ -36,6 +36,7 @@ const redirectToLogin = (req: Request, res: Response, next: NextFunction) => {
   req.session.hydraLoginState = state
   req.session.save(error => {
     if (error) {
+      console.error(error)
       next(error)
       return
     }
@@ -50,11 +51,12 @@ const redirectToLogin = (req: Request, res: Response, next: NextFunction) => {
 
     // The challenge is used to fetch information about the login request from ORY Hydra.
     const challenge = String(query.login_challenge)
-    const returnTo = new URL('/postLogin', 'http://127.0.0.1:4455')
+    const returnTo = new URL(config.baseUrl + '/postLogin')
+    console.log({ baseUrl: config.baseUrl, returnTo })
     returnTo.searchParams.set('hydra_login_state', state)
     returnTo.searchParams.set('login_challenge', challenge)
     const redirectTo = new URL(
-      'http://127.0.0.1:4433' + '/self-service/login/browser'
+      config.kratos.browser + '/self-service/login/browser'
     )
     redirectTo.searchParams.set('refresh', 'true')
     redirectTo.searchParams.set('return_to', returnTo.toString())
@@ -100,6 +102,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
   // The challenge is used to fetch information about the login request from ORY Hydra.
   const challenge = String(query.login_challenge)
   if (!challenge) {
+    console.error("Expected consent_challenge to be set")
     next(new Error('Expected a login challenge to be set but received none.'))
     return
   }

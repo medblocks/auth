@@ -34,6 +34,10 @@ switch ((process.env.SECURITY_MODE || '').toLowerCase()) {
 // },
 
 export default {
+  hydra: {
+    admin: (process.env.HYDRA_ADMIN_URL || '').replace(/\/+$/, ''),
+  },
+  logoUrl: process.env.LOGO_URL || 'https://www.kadencewp.com/wp-content/uploads/2020/10/alogo-2.svg',
   kratos: {
     browser: browserUrl.replace(/\/+$/, ''),
     admin: (process.env.KRATOS_ADMIN_URL || '').replace(/\/+$/, ''),
