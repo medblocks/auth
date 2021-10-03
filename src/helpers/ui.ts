@@ -1,8 +1,8 @@
-import { UiNode, UiNodeInputAttributes } from '@ory/kratos-client'
 import {
+  UiNode,
   UiNodeAnchorAttributes,
-  UiNodeTextAttributes,
-} from '@ory/kratos-client/api'
+  UiNodeInputAttributes,
+} from '@ory/kratos-client'
 
 const ui: { [key: string]: { title: string } } = {
   // You could add custom translations here if you want to:
@@ -36,7 +36,7 @@ export const getTitle = (n: UiNode): string => {
       }
       return key
     case 'text':
-      return (n.attributes as UiNodeTextAttributes).text.text
+      return n.meta.label?.text || ''
   }
 
   return ''
@@ -45,6 +45,10 @@ export const getTitle = (n: UiNode): string => {
 // This helper function translates the html input type to the corresponding partial name.
 export const toUiNodePartial = (node: UiNode) => {
   switch (node.type) {
+    case 'img':
+      return 'ui_node_image'
+    case 'text':
+      return 'ui_node_text'
     case 'input': {
       const attributes = node.attributes as UiNodeInputAttributes
       switch (attributes.type) {
@@ -53,6 +57,8 @@ export const toUiNodePartial = (node: UiNode) => {
         case 'password':
           return 'ui_node_input_password'
         case 'submit':
+          return 'ui_node_input_button'
+        case 'button':
           return 'ui_node_input_button'
         case 'checkbox':
           return 'ui_node_input_checkbox'

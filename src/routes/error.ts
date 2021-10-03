@@ -12,9 +12,6 @@ const kratos = new V0alpha2Api(
 // A simple express handler that shows the error screen.
 export default (req: Request, res: Response, next: NextFunction) => {
   const error = req.query.id
-  console.trace(req.query)
-  console.trace(req.url)
-  console.trace("On error page")
   if (!error || !isString(error)) {
     // No error was send, redirecting back to home.
     console.trace("No error found")
