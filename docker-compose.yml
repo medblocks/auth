@@ -20,7 +20,7 @@ services:
     image:  oryd/kratos:latest-sqlite
     ports:
       - '4433:4433' # public
-      # - '4434:4434' # admin
+      - '4434:4434' # admin
     restart: unless-stopped
     environment:
       - DSN=postgres://kratos:kratos@postgresd:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
