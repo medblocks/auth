@@ -75,35 +75,23 @@ body {
     margin: 0 1rem;
 }
 
-.content .header .icon-actions .fork path,
+
+
 .content .header .icon-actions .logout path,
 .content .header .icon-actions .settings path  {
     fill: var(--base-black);
     transition: fill 0.1s ease-in-out;
 }
 
-.content .header .icon-actions .fork:hover path,
+
 .content .header .icon-actions .settings:hover path ,
 .content .header .icon-actions .logout:hover path {
     fill: var(--base-text);
 }
 
-.content .header .icon-actions .fork a,
-.content .header .icon-actions .fork a:visited {
-    color: var(--primary-half);
-    text-decoration: none;
-    transition: color 0.1s ease-in-out;
-    font-size: 0.666em;
-    line-height: 1em;
-}
-
-.content .header .icon-actions .fork a div {
-    display: inline-block;
-    color: var(--base-black);
-}
 
 .content .header .logo {
-    height: 2rem;
+    height: 6rem;
     margin: 0;
 }
 
