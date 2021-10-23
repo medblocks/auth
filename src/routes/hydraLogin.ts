@@ -89,7 +89,7 @@ export const postLogin = async (req: Request, res: Response, next: NextFunction)
   try {
     const session = await kratos.toSession(undefined, req.header('Cookie'))
     const { data } = session
-    const hydraResponse = await hydraAdmin.acceptLoginRequest(challenge, { subject: data.identity.id, context: data.identity })
+    const hydraResponse = await hydraAdmin.acceptLoginRequest(challenge, { subject: data.identity.id, context: data.identity, remember: true })
     return res.redirect(hydraResponse.data.redirect_to)
   }
   catch (e) {
@@ -113,6 +113,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
       // If hydra was already able to authenticate the user, skip will be true and we do not need to re-authenticate
       // the user.
       if (body.skip) {
+        console.log("skipping login request")
+        console.log({ body })
         // You can apply logic here, for example update the number of times the user logged in.
         // ...
 
@@ -121,6 +123,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
         return hydraAdmin
           .acceptLoginRequest(challenge, {
             // All we need to do is to confirm that we indeed want to log in the user.
+            remember: true,
             subject: String(body.subject)
           })
           .then(({ data: body }) => {
@@ -128,6 +131,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
             res.redirect(String(body.redirect_to))
           })
       } else {
+        console.log("not skipping login request")
+        console.log({ body })
         return redirectToLogin(req, res, next)
       }
 

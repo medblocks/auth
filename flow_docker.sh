@@ -2,12 +2,11 @@
 docker run --rm hydra \
      clients create \
     --endpoint http://host.docker.internal/hydra/admin/ \
-    --id auth-code-client \
-    --secret secret \
+    --id svelte-app \
+    --token-endpoint-auth-method none \
     --grant-types authorization_code,refresh_token \
-    --response-types code,id_token \
     --scope openid,offline \
-    --callbacks http://127.0.0.1:5555/callback
+    --callbacks http://127.0.0.1:8000/
 
 # Start Token Auth
 docker run -p 5555:5555 hydra \

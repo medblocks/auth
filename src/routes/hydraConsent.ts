@@ -39,6 +39,8 @@ export const hydraGetConsent = (
         .then(({ data: body }) => {
             // If a user has granted this application the requested scope, hydra will tell us to not show the UI.
             if (body.skip) {
+                console.log("skipping consent request")
+                console.log({body})
                 // You can apply logic here, for example grant another scope, or do whatever...
 
                 // Now it's time to grant the consent request. You could also deny the request if something went terribly wrong
@@ -67,12 +69,12 @@ export const hydraGetConsent = (
                         res.redirect(String(body.redirect_to))
                     })
             }
-
+            console.log("not skipping consent request")
+            console.log({body})
             // If consent can't be skipped we MUST show the consent UI.
             const context = body.context as any
             const name = context?.traits?.name?.first
-            console.log(body.context)
-            console.log({ body })
+
             res.render('consent', {
                 csrfToken: req.csrfToken(),
                 challenge: challenge,
@@ -134,17 +136,17 @@ export const hydraPostConsent = (
 
             // This tells hydra to remember this consent request and allow the same client to request the same
             // scopes from the same user, without showing the UI, in the future.
-            acceptConsentRequest.remember = Boolean(req.body.remember)
+            acceptConsentRequest.remember = true
 
-            // When this "remember" sesion expires, in seconds. Set this to 0 so it will never expire.
-            acceptConsentRequest.remember_for = 3600
+            // // When this "remember" sesion expires, in seconds. Set this to 0 so it will never expire.
+            // acceptConsentRequest.remember_for = 3600
 
             // The session allows us to set session data for id and access tokens. Let's add the email if it is included.
             acceptConsentRequest.session = createHydraSession(
                 body.requested_scope,
                 body.context
             )
-
+            console.log({acceptConsentRequest})
             return hydraAdmin.acceptConsentRequest(challenge, acceptConsentRequest)
         })
         .then(({ data: body }) => {
