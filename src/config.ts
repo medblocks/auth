@@ -43,7 +43,7 @@ export default {
     admin: (process.env.KRATOS_ADMIN_URL || '').replace(/\/+$/, ''),
     public: publicUrl.replace(/\/+$/, ''),
   },
-  baseUrl,
+  baseUrl:baseUrl.replace(/\/+$/, ''),
   jwksUrl: process.env.JWKS_URL || '/',
   projectName: process.env.PROJECT_NAME || 'SecureApp',
 

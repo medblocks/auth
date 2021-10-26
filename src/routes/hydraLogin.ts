@@ -122,7 +122,6 @@ export default (req: Request, res: Response, next: NextFunction) => {
         return hydraAdmin
           .acceptLoginRequest(challenge, {
             // All we need to do is to confirm that we indeed want to log in the user.
-            remember: true,
             subject: String(body.subject)
           })
           .then(({ data: body }) => {
