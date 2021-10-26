@@ -19,6 +19,7 @@ import protectSimple from './middleware/simple'
 import protectOathkeeper from './middleware/oathkeeper'
 import csrf from 'csurf'
 import hydraLogin, { postLogin } from './routes/hydraLogin'
+import hydraLogout from './routes/hydraLogout'
 import session from 'express-session'
 import { hydraGetConsent, hydraPostConsent } from './routes/hydraConsent'
 import bodyParser from 'body-parser'
@@ -104,6 +105,7 @@ if (process.env.NODE_ENV === 'stub') {
   app.get('/recovery', recoveryHandler)
   app.get('/postLogin', csrfProtection, postLogin)
   app.get('/hydralogin', csrfProtection, hydraLogin)
+  app.get('/hydralogout', csrfProtection, hydraLogout)
   app.get(
     '/hydraconsent',
     protect,
