@@ -15,6 +15,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+    - name: Slack Notification Start
+      id: slack
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel_id: C02K52UNL0N
+        status: STARTED
+        color: FFA500
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+
+
     - name: Checkout to the tagged commit
       uses: actions/checkout@v2
 
@@ -62,12 +74,24 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-    - name: Slack Notification
-      uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_USERNAME: GitHub Actions
-        SLACK_ICON_EMOJI: github
-        SLACK_COLOR: ${{ job.status }}
-        SLACK_FOOTER: 'Medblocks Auth Docker CI'
-        
+    - name: Notify Success Status
+      if: success()
+      env: 
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        message_id: ${{ steps.slack.outputs.message_id }}
+        channel_id: C02K52UNL0N
+        status: SUCCESS
+        color: good
+
+    - name: Notify Fail Status
+      if: failure()
+      env: 
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        message_id: ${{ steps.slack.outputs.message_id }}
+        channel_id: C02K52UNL0N
+        status: FAILURE
+        color: danger
