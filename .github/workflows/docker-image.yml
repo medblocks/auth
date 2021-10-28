@@ -24,8 +24,6 @@ jobs:
       uses: docker/metadata-action@v3
       with:
         images: ${{ env.IMAGES }}
-        flavor: |
-            suffix=-distroless,onlatest=true
 
 
     - name: Set up QEMU
