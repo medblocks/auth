@@ -1,4 +1,6 @@
 # Medblocks Oauth Stack
+![Docker Image CI](https://github.com/medblocks/auth/actions/workflows/docker-image.yml/badge.svg)
+
 This repo acts as a gateway between other applications and other Medblocks Stack services like the openEHR and FHIR API. The authentication is done via OAuth2.0 using ORY Hydra. The users are stored on ORY Kratos.
 
 
