@@ -23,6 +23,7 @@ import hydraLogout from './routes/hydraLogout'
 import session from 'express-session'
 import { hydraGetConsent, hydraPostConsent } from './routes/hydraConsent'
 import bodyParser from 'body-parser'
+import cors from 'cors'
 
 export const protect =
   config.securityMode === SECURITY_MODE_JWT ? protectOathkeeper : protectSimple
@@ -120,6 +121,9 @@ if (process.env.NODE_ENV === 'stub') {
     csrfProtection,
     hydraPostConsent
   )
+  app.get('/postlogout', cors(), (req, res, next) => {
+    res.send('You have successfully logged out')
+  })
 }
 
 app.get('/health', (_: Request, res: Response) => res.send('ok'))

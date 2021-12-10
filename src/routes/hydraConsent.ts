@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import { AdminApi, Configuration } from '@oryd/hydra-client'
+import { AdminApi, Configuration, ConsentRequestSession } from '@oryd/hydra-client'
 import config from '../config'
 const hydraAdmin = new AdminApi(
     new Configuration({
@@ -10,10 +10,19 @@ const hydraAdmin = new AdminApi(
 const createHydraSession = (
     requestedScope: string[] = [],
     context
-) => {
+): ConsentRequestSession => {
     return {
         id_token: {
-            userdata: context
+            userdata: context,
+            fhirUser: "http://fhirserver.com/Patient/123"
+        },
+        access_token: {
+            scope: requestedScope,
+            organization_id: "medblocks",
+            patient_id: "sidharth",
+            realm_access: {
+                roles: requestedScope
+            }
         }
     }
 }
@@ -41,7 +50,7 @@ export const hydraGetConsent = (
             if (body.skip) {
                 // You can apply logic here, for example grant another scope, or do whatever...
                 console.log("skipping consent request")
-                console.log({body})
+                console.log({ body })
                 // Now it's time to grant the consent request. You could also deny the request if something went terribly wrong
 
                 const acceptConsentRequest = {
@@ -69,7 +78,7 @@ export const hydraGetConsent = (
                     })
             }
             console.log("not skipping consent request")
-            console.log({body})
+            console.log({ body })
             // If consent can't be skipped we MUST show the consent UI.
             const context = body.context as any
             const name = context?.traits?.name?.first
@@ -146,7 +155,7 @@ export const hydraPostConsent = (
                 body.requested_scope,
                 body.context
             )
-            console.log({acceptConsentRequest})
+            console.log({ acceptConsentRequest })
             return hydraAdmin.acceptConsentRequest(challenge, acceptConsentRequest)
         })
         .then(({ data: body }) => {
