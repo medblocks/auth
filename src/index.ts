@@ -109,14 +109,12 @@ if (process.env.NODE_ENV === 'stub') {
   app.get('/hydralogout', csrfProtection, hydraLogout)
   app.get(
     '/hydraconsent',
-    protect,
     csrfProtection,
     hydraGetConsent,
     errorHandler
   )
   app.post(
     '/hydraconsent',
-    protect,
     bodyParser.urlencoded({ extended: true }),
     csrfProtection,
     hydraPostConsent
