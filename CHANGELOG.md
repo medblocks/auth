@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/ory/kratos-selfservice-ui-node/compare/v0.0.2...v0.0.4) (2021-12-11)
+
+
+### Bug Fixes
+
+* fixes infinite loop in iframe ([a59fe3e](https://github.com/ory/kratos-selfservice-ui-node/commit/a59fe3ee61e0fa057f355c2dde91ba1a036942e4))
+
 ### 0.0.2 (2021-10-27)
 
 
