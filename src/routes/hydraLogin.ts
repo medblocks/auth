@@ -12,8 +12,10 @@ const hydraAdmin = new AdminApi(
 )
 
 const kratos = new V0alpha2Api(
-  new KratosConfig({ basePath: config.kratos.public })
+  new KratosConfig({ basePath: config.kratos.admin })
 )
+console.log({config})
+
 
 const redirectToLogin = (req: Request, res: Response, next: NextFunction) => {
   if (!req.session) {
@@ -34,7 +36,7 @@ const redirectToLogin = (req: Request, res: Response, next: NextFunction) => {
 
   const state = crypto.randomBytes(48).toString('hex')
   req.session.hydraLoginState = state
-  req.session.save(error => {
+  req.session.save((error) => {
     if (error) {
       console.error(error)
       next(error)
@@ -66,7 +68,11 @@ const redirectToLogin = (req: Request, res: Response, next: NextFunction) => {
   })
 }
 
-export const postLogin = async (req: Request, res: Response, next: NextFunction) => {
+export const postLogin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const query = url.parse(req.url, true).query
 
   // The challenge is used to fetch information about the login request from ORY Hydra.
@@ -76,33 +82,36 @@ export const postLogin = async (req: Request, res: Response, next: NextFunction)
   const challenge = String(query.login_challenge)
   const kratosSessionCookie = req.cookies.ory_kratos_session
   if (!kratosSessionCookie) {
-    console.log("No Kratos Cookie found")
+    console.log('No Kratos Cookie found')
     return redirectToLogin(req, res, next)
   }
   const hydraLoginState = req.query.hydra_login_state
   req.headers['host'] = config.kratos.public.split('/')[2]
   if (hydraLoginState !== req.session.hydraLoginState) {
-    console.log("Login state not equal to one previously set")
+    console.log('Login state not equal to one previously set')
     console.log(req.session.hydraLoginState)
     return redirectToLogin(req, res, next)
   }
   try {
     const session = await kratos.toSession(undefined, req.header('Cookie'))
     const { data } = session
-    const hydraResponse = await hydraAdmin.acceptLoginRequest(challenge, { subject: data.identity.id, context: data.identity,remember:true})
+    console.log({ data })
+    const hydraResponse = await hydraAdmin.acceptLoginRequest(challenge, {
+      subject: data.identity.id,
+      context: data.identity,
+      remember: true,
+    })
     return res.redirect(hydraResponse.data.redirect_to)
-  }
-  catch (e) {
+  } catch (e) {
     next(e)
   }
-
 }
 export default (req: Request, res: Response, next: NextFunction) => {
   const query = url.parse(req.url, true).query
   // The challenge is used to fetch information about the login request from ORY Hydra.
   const challenge = String(query.login_challenge)
   if (!challenge) {
-    console.error("Expected consent_challenge to be set")
+    console.error('Expected consent_challenge to be set')
     next(new Error('Expected a login challenge to be set but received none.'))
     return
   }
@@ -110,26 +119,38 @@ export default (req: Request, res: Response, next: NextFunction) => {
   hydraAdmin
     .getLoginRequest(challenge)
     .then(async ({ data: body }) => {
+      console.log('login', body.request_url)
       // If hydra was already able to authenticate the user, skip will be true and we do not need to re-authenticate
       // the user.
       if (body.skip) {
         // You can apply logic here, for example update the number of times the user logged in.
         // ...
-        console.log("skipping login request")
+      
+        console.log('skipping login request')
         console.log({ body })
         // Now it's time to grant the login request. You could also deny the request if something went terribly wrong
         // (e.g. your arch-enemy logging in...)
+
+       
+
+        const session = await kratos.adminGetIdentity(body.subject)
+        const { data } = session
+        console.log({ data })
+
+
         return hydraAdmin
           .acceptLoginRequest(challenge, {
             // All we need to do is to confirm that we indeed want to log in the user.
-            subject: String(body.subject)
+            subject: String(body.subject),
+            context:data
           })
           .then(({ data: body }) => {
             // All we need to do now is to redirect the user back to hydra!
+            console.log('login redirectURL',body.redirect_to)
             res.redirect(String(body.redirect_to))
           })
       } else {
-        console.log("not skipping login request")
+        console.log('not skipping login request')
         console.log({ body })
         return redirectToLogin(req, res, next)
       }
