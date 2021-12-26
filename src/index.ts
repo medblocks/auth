@@ -22,6 +22,7 @@ import hydraLogin, { postLogin } from './routes/hydraLogin'
 import hydraLogout from './routes/hydraLogout'
 import session from 'express-session'
 import { hydraGetConsent, hydraPostConsent } from './routes/hydraConsent'
+import { getPatientPicker, postPatientPicker } from './routes/patientPicker'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 
@@ -33,7 +34,6 @@ const csrfProtection = csrf({ cookie: true })
 const app = express()
 
 app.locals.logoUrl = config.logoUrl
-
 
 app.use(morgan('tiny'))
 app.use(cookieParser())
@@ -106,7 +106,7 @@ if (process.env.NODE_ENV === 'stub') {
   app.get('/recovery', recoveryHandler)
   app.get('/postLogin', csrfProtection, postLogin)
   app.get('/hydralogin', csrfProtection, hydraLogin)
-  app.get('/hydralogout', csrfProtection, hydraLogout)
+  app.get('/hydralogout', cors(), csrfProtection, hydraLogout)
   app.get(
     '/hydraconsent',
     csrfProtection,
@@ -118,6 +118,19 @@ if (process.env.NODE_ENV === 'stub') {
     bodyParser.urlencoded({ extended: true }),
     csrfProtection,
     hydraPostConsent
+  )
+  app.get(
+    '/patientpicker/:challenge/:launch',
+    protect,
+    csrfProtection,
+    getPatientPicker
+  )
+  app.post(
+    '/patientpicker/:challenge/:launch',
+    protect,
+    bodyParser.urlencoded({ extended: true }),
+    csrfProtection,
+    postPatientPicker
   )
   app.get('/postlogout', cors(), (req, res, next) => {
     res.send('You have successfully logged out')
@@ -137,8 +150,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     message: JSON.stringify(err, null, 2),
   })
 })
-
-
 
 const port = Number(process.env.PORT) || 3000
 

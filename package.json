@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "serve": "node lib/index.js",
-    "start": "set BASE_URL=http://127.0.0.1:4455&& set HYDRA_ADMIN_URL=http://localhost:4445&& set KRATOS_PUBLIC_URL=http://localhost:4433/&& set KRATOS_ADMIN_URL=http://localhost:4434/&& set  PORT=4455 && set KRATOS_BROWSER_URL=http://127.0.0.1:4433/&&  ts-node-dev --watch public,views --respawn src/index.ts",
+    "start": "set BASE_URL=http://localhost:4455&& set HYDRA_ADMIN_URL=http://localhost/hydra/admin&& set KRATOS_PUBLIC_URL=http://localhost/kratos/public&& set KRATOS_ADMIN_URL=http://localhost/kratos/admin&& set  PORT=4455 && set KRATOS_BROWSER_URL=http://localhost/kratos/admin&&  ts-node-dev --watch public,views --respawn src/index.ts",
     "test": "npm-run-all build",
     "format": "prettier --write src/**/*.ts",
     "check-format": "prettier --check src/**/*.ts",
