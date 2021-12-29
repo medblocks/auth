@@ -96,7 +96,7 @@ export const hydraGetConsent = (
             }
             else{
               console.log('Hello',{challenge,launch})
-             res.redirect(`/patientpicker/${challenge}/${launch}`)
+             res.redirect(`${config.baseUrl}/patientpicker/${challenge}/${launch}`)
             }
           }
         }
