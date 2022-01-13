@@ -13,7 +13,7 @@ export const redirectOnSoftError =
       next(err)
       return
     }
-
+    console.log('status code from redirectOnSofterror',err.response.status)
     if (
       err.response.status === 404 ||
       err.response.status === 410 ||

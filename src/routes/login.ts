@@ -11,7 +11,7 @@ const kratos = new V0alpha2Api(
 // A simple express handler that shows the login screen.
 export default (req: Request, res: Response, next: NextFunction) => {
   const flow = req.query.flow
-
+  console.log({flow})
   // The flow is used to identify the login and registration flow and
   // return data like the csrf_token and so on.
   if (!flow || !isString(flow)) {
@@ -34,10 +34,13 @@ export default (req: Request, res: Response, next: NextFunction) => {
     return
   }
 
+  console.log('cookies in request header',req.header('cookie'))
+
   return (
     kratos
       .getSelfServiceLoginFlow(flow, req.header('cookie'))
       .then(({ status, data: flow, ...response }) => {
+        console.log('status from login flow',status)
         if (status !== 200) {
           return Promise.reject(flow)
         }

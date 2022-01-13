@@ -5,6 +5,7 @@ import {
   ConsentRequestSession,
 } from '@oryd/hydra-client'
 import config from '../config'
+import axios from 'axios'
 const hydraAdmin = new AdminApi(
   new Configuration({
     basePath: config.hydra.admin,
@@ -33,7 +34,7 @@ const createHydraSession = (
   }
 }
 
-export const getPatientPicker = (
+export const getPatientPicker = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -43,7 +44,8 @@ export const getPatientPicker = (
   // The challenge is used to fetch information about the consent request from ORY Hydra.
   const challenge = req.params.challenge as string
   const launch = req.params.launch as string
-
+  let patientResource = await axios.get(`https://grameen.medblocks.org/fhir/Patient`)
+  console.log(patientResource.data.entry)
   console.log('patientpicker',{challenge,launch},req.csrfToken())   //F1nO5k1S-iiosONWU2A_iLqzNmcj_FR24ACE
 
   if (!challenge) {
@@ -65,7 +67,7 @@ export const getPatientPicker = (
         challenge: challenge,
         launch:launch,
         action:` ${config.baseUrl}/patientpicker/${challenge}/${launch}`,
-        
+        patients : patientResource.data.entry
       })
     })
     // This will handle any error that happens when making HTTP calls to hydra

@@ -199,7 +199,7 @@ export const hydraPostConsent = (
       acceptConsentRequest.remember = true
 
       // When this "remember" sesion expires, in seconds. Set this to 0 so it will never expire.
-      acceptConsentRequest.remember_for = 3600
+      acceptConsentRequest.remember_for = 0
 
       // The session allows us to set session data for id and access tokens. Let's add the email if it is included.
       acceptConsentRequest.session = createHydraSession(

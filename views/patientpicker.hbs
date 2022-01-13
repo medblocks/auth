@@ -1,5 +1,5 @@
-<div class="auth">
-    <div class="container" id="consent">
+<div class="picker">
+    <div class="container" id="picker">
         {{> icon_logo}}
        
         <form action="{{action}}" method="POST">
@@ -11,16 +11,13 @@
 
             {{!-- <div style="margin-bottom: 15px; margin-top: 8px">Patients</div> --}}
 
+            {{#each patients as |patient|}}
              <div style="margin-bottom: 5px">
-                <input style="display: inline-block; margin-right: 3px" type="checkbox" id="744d439a-d5c0-40f5-832e-a757492ba47c" value="744d439a-d5c0-40f5-832e-a757492ba47c"
+                <input style="display: inline-block; margin-right: 3px" type="checkbox" id={{patient.resource.id}} value={{patient.resource.id}}
                     name="patient" />
-                <div style="display: inline-block">Zia Uddin Ahammed</div>
+                <div style="display: inline-block">{{patient.resource.name.0.given.0}}</div>
             </div>
-             <div style="margin-bottom: 5px">
-                <input style="display: inline-block; margin-right: 3px" type="checkbox" id="1fefdbab-10f0-40ff-adaa-62ffccbda356" value="1fefdbab-10f0-40ff-adaa-62ffccbda356"
-                    name="patient" />
-                <div style="display: inline-block">Kopal Pora Patient</div>
-            </div>
+            {{/each}}
             <Button type="submit" id="accept" name="submit" value="Allow access">Submit</Button>
         </form>
     </div>
