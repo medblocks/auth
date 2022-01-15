@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.0.10](https://github.com/ory/kratos-selfservice-ui-node/compare/v0.0.9...v0.0.10) (2022-01-15)
 
+### [0.0.10](https://github.com/ory/kratos-selfservice-ui-node/compare/v0.0.9...v0.0.10) (2022-01-15)
+
 ### [0.0.9](https://github.com/ory/kratos-selfservice-ui-node/compare/v0.0.5...v0.0.9) (2022-01-15)
 
 
