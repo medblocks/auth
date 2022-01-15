@@ -25,10 +25,14 @@ const createHydraSession = (
   context,
   launch
 ): ConsentRequestSession => {
+  console.log("Setting hydra consent")
+  console.log({ context, launch })
   return {
     id_token: {
       userdata: context,
       launch,
+      user_id: context?.traits?.email
+      
     },
     access_token: {
       scope: requestedScope,
@@ -94,12 +98,13 @@ export const hydraGetConsent = (
                   res.redirect(String(body.redirect_to))
                 })
             }
-            else{
-              console.log('Hello',{challenge,launch})
-             res.redirect(`${config.baseUrl}/patientpicker/${challenge}/${launch}`)
+            else {
+              console.log('Hello', { challenge, launch })
+              res.redirect(`${config.baseUrl}/patientpicker/${challenge}/${launch}`)
             }
           }
         }
+        console.log("generating session")
         const acceptConsentRequest = {
           grant_scope: body.requested_scope,
           grant_access_token_audience: body.requested_access_token_audience,

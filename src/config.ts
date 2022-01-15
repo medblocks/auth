@@ -1,3 +1,7 @@
+import {config} from 'dotenv'
+
+config()
+
 export const SECURITY_MODE_STANDALONE = 'cookie'
 export const SECURITY_MODE_JWT = 'jwt'
 
@@ -39,7 +43,7 @@ export default {
   },
   logoUrl: process.env.LOGO_URL || 'https://www.kadencewp.com/wp-content/uploads/2020/10/alogo-2.svg',
   kratos: {
-    browser: browserUrl.replace(/\/+$/, ''),
+    browser: `${baseUrl.replace(/\/+$/, '')}/.ory/kratos`,
     admin: (process.env.KRATOS_ADMIN_URL || '').replace(/\/+$/, ''),
     public: publicUrl.replace(/\/+$/, ''),
   },

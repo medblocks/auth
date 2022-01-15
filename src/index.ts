@@ -25,6 +25,7 @@ import { hydraGetConsent, hydraPostConsent } from './routes/hydraConsent'
 import { getPatientPicker, postPatientPicker } from './routes/patientPicker'
 import bodyParser from 'body-parser'
 import cors from 'cors'
+import proxy from 'express-http-proxy'
 
 export const protect =
   config.securityMode === SECURITY_MODE_JWT ? protectOathkeeper : protectSimple
@@ -37,6 +38,9 @@ app.locals.logoUrl = config.logoUrl
 
 app.use(morgan('tiny'))
 app.use(cookieParser())
+
+app.use('/.ory/kratos', proxy(config.kratos.public))
+
 app.use(
   session({
     secret: 'secretMustChangeThis',
