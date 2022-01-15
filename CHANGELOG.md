@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/ory/kratos-selfservice-ui-node/compare/v0.0.5...v0.0.9) (2022-01-15)
+
+
+### Features
+
+* changed proxy path ([16c6a0b](https://github.com/ory/kratos-selfservice-ui-node/commit/16c6a0b046997cf3b2e7812f6f433093e4969588))
+
 ### [0.0.8](https://github.com/ory/kratos-selfservice-ui-node/compare/v0.0.5...v0.0.8) (2022-01-15)
 
 
