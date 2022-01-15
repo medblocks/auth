@@ -1,4 +1,4 @@
-import {config} from 'dotenv'
+import { config } from 'dotenv'
 
 config()
 
@@ -8,7 +8,6 @@ export const SECURITY_MODE_JWT = 'jwt'
 const baseUrl = process.env.BASE_URL || '/'
 
 let securityMode = SECURITY_MODE_STANDALONE
-let browserUrl = process.env.KRATOS_BROWSER_URL || ''
 let publicUrl = process.env.KRATOS_PUBLIC_URL || ''
 switch ((process.env.SECURITY_MODE || '').toLowerCase()) {
   case 'jwt':
@@ -40,6 +39,7 @@ switch ((process.env.SECURITY_MODE || '').toLowerCase()) {
 export default {
   hydra: {
     admin: (process.env.HYDRA_ADMIN_URL || '').replace(/\/+$/, ''),
+    public: (process.env.HYDRA_PUBLIC_URL || '').replace(/\/+$/, ''),
   },
   logoUrl: process.env.LOGO_URL || 'https://www.kadencewp.com/wp-content/uploads/2020/10/alogo-2.svg',
   kratos: {
@@ -47,9 +47,8 @@ export default {
     admin: (process.env.KRATOS_ADMIN_URL || '').replace(/\/+$/, ''),
     public: publicUrl.replace(/\/+$/, ''),
   },
-  baseUrl:baseUrl.replace(/\/+$/, ''),
+  baseUrl: baseUrl.replace(/\/+$/, ''),
   jwksUrl: process.env.JWKS_URL || '/',
-  projectName: process.env.PROJECT_NAME || 'SecureApp',
 
   securityMode,
   SECURITY_MODE_JWT,

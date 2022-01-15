@@ -40,6 +40,7 @@ app.use(morgan('tiny'))
 app.use(cookieParser())
 
 app.use('/.ory/kratos', proxy(config.kratos.public))
+app.use('/.ory/hydra', proxy(config.hydra.public))
 
 app.use(
   session({
@@ -52,7 +53,6 @@ app.use(
 app.set('view engine', 'hbs')
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.locals.projectName = config.projectName
   res.locals.baseUrl = config.baseUrl
   res.locals.pathPrefix = config.baseUrl.replace(/\/+$/, '') + '/'
   next()
