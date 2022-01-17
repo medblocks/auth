@@ -33,6 +33,7 @@ export const protect =
 const csrfProtection = csrf({ cookie: true })
 
 const app = express()
+app.use(cors());
 
 app.locals.logoUrl = config.logoUrl
 
