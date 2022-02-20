@@ -34,7 +34,7 @@ const createHydraSession = (
       launch,
       user_id: context?.traits?.email,
       aud: client_id
-      
+
     },
     access_token: {
       scope: requestedScope,
@@ -111,7 +111,7 @@ export const hydraGetConsent = (
           session: createHydraSession(
             body.requested_scope,
             body.context,
-            body.client.client_name,
+            body.client.client_id,
             getLaunch(body.request_url)
           ),
         }
@@ -211,6 +211,7 @@ export const hydraPostConsent = (
       acceptConsentRequest.session = createHydraSession(
         body.requested_scope,
         body.context,
+        body.client.client_id,
         getLaunch(body.request_url)
       )
       console.log({ acceptConsentRequest })
