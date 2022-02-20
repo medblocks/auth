@@ -23,6 +23,7 @@ const getLaunch = (url) => {
 const createHydraSession = (
   requestedScope: string[] = [],
   context,
+  client_id,
   launch
 ): ConsentRequestSession => {
   console.log("Setting hydra consent")
@@ -31,16 +32,15 @@ const createHydraSession = (
     id_token: {
       userdata: context,
       launch,
-      user_id: context?.traits?.email
+      user_id: context?.traits?.email,
+      aud: client_id
       
     },
     access_token: {
       scope: requestedScope,
       organization_id: 'medblocks',
       patient_id: 'sidharth',
-      realm_access: {
-        roles: requestedScope,
-      },
+      aud: client_id
     },
   }
 }
@@ -111,6 +111,7 @@ export const hydraGetConsent = (
           session: createHydraSession(
             body.requested_scope,
             body.context,
+            body.client.client_name,
             getLaunch(body.request_url)
           ),
         }
