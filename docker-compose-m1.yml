@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   kratos-migrate:
-    image: kratos
+    image: oryd/kratos:v0.9.0-alpha.3
     environment:
       - DSN=postgres://kratos:kratos@postgresd:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
     volumes:
@@ -13,11 +13,11 @@ services:
     restart: on-failure
     networks:
       - intranet
-
+  
   kratos:
     depends_on:
       - kratos-migrate
-    image: kratos
+    image: oryd/kratos:v0.9.0-alpha.3
     ports:
       - '4433:4433' # public
       - '4434:4434' # admin
@@ -43,14 +43,16 @@ services:
   #   restart: on-failure
 
   hydra:
-    image: hydra
+    image: oryd/hydra:v1.11.8
     ports:
       - "4444:4444" # Public port
       - "4445:4445" # Admin port
       - "5555:5555" # Port for hydra token user
-    command: serve -c /etc/config/hydra/hydra.yml all --dangerous-force-http
+    command:
+      serve -c /etc/config/hydra/hydra.yml all --dangerous-force-http
     volumes:
-      - type: bind
+      -
+        type: bind
         source: ./hydra
         target: /etc/config/hydra
     environment:
@@ -63,27 +65,31 @@ services:
       - intranet
 
   hydra-migrate:
-    image: hydra
+    image: oryd/hydra:v1.11.8
     environment:
       - DSN=postgres://hydra:hydra@postgresd:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
-    command: migrate -c /etc/config/hydra/hydra.yml sql -e --yes
+    command:
+      migrate -c /etc/config/hydra/hydra.yml sql -e --yes
     volumes:
-      - type: bind
+      -
+        type: bind
         source: ./hydra
         target: /etc/config/hydra
     restart: on-failure
     networks:
       - intranet
-
+  
   postgresd:
     image: postgres:9.6
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - intranet
-
+    
   mailslurper:
     image: mailslurper
     ports:
@@ -93,4 +99,4 @@ services:
       - intranet
 
 networks:
-  intranet: null
+  intranet:
