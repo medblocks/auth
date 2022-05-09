@@ -46,7 +46,6 @@ export default (req: Request, res: Response, next: NextFunction) => {
         }
 
         // Render the data using a view (e.g. Jade Template):
-        console.log({ flow: JSON.stringify(flow.ui) })
         res.render('login', flow)
       })
       // Handle errors using ExpressJS' next functionality:
