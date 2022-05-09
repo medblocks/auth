@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   kratos-migrate:
-    image: oryd/kratos:latest-sqlite
+    image: oryd/kratos:v0.9.0-alpha.3
     environment:
       - DSN=postgres://kratos:kratos@postgresd:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
     volumes:
@@ -17,7 +17,7 @@ services:
   kratos:
     depends_on:
       - kratos-migrate
-    image: oryd/kratos:latest-sqlite
+    image: oryd/kratos:v0.9.0-alpha.3
     ports:
       - '4433:4433' # public
       - '4434:4434' # admin
@@ -43,7 +43,7 @@ services:
   #   restart: on-failure
 
   hydra:
-    image: oryd/hydra:v1.10.6
+    image: oryd/hydra:v1.11.8
     ports:
       - "4444:4444" # Public port
       - "4445:4445" # Admin port
@@ -65,7 +65,7 @@ services:
       - intranet
 
   hydra-migrate:
-    image: oryd/hydra:v1.10.6
+    image: oryd/hydra:v1.11.8
     environment:
       - DSN=postgres://hydra:hydra@postgresd:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
     command:

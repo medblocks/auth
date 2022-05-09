@@ -103,7 +103,7 @@ if (process.env.NODE_ENV === 'stub') {
 } else {
   app.get('/', protect, dashboard)
   app.get('/dashboard', protect, dashboard)
-  app.get('/registration', registrationHandler)
+  // app.get('/registration', registrationHandler)
   app.get('/login', loginHandler)
   app.get('/error', errorHandler)
   app.get('/settings', protect, settingsHandler)
