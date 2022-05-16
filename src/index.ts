@@ -2,7 +2,6 @@ import cookieParser from 'cookie-parser'
 import express, { Request, NextFunction, Response } from 'express'
 import handlebars from 'express-handlebars'
 import loginHandler from './routes/login'
-import registrationHandler from './routes/registration'
 import errorHandler from './routes/error'
 import dashboard from './routes/dashboard'
 import debug from './routes/debug'
@@ -27,6 +26,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import proxy from 'express-http-proxy'
 
+
 export const protect =
   config.securityMode === SECURITY_MODE_JWT ? protectOathkeeper : protectSimple
 
@@ -39,6 +39,7 @@ app.locals.logoUrl = config.logoUrl
 
 app.use(morgan('tiny'))
 app.use(cookieParser())
+
 
 app.use('/.ory/kratos', proxy(config.kratos.public))
 app.use('/.ory/hydra', proxy(config.hydra.public))
@@ -149,7 +150,7 @@ app.get('/debug', debug)
 //   res.redirect(config.baseUrl)
 // })
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error(err.stack)
   res.status(500).render('error', {
     message: JSON.stringify(err, null, 2),
@@ -158,7 +159,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 const port = Number(process.env.PORT) || 3000
 
-let listener = () => {
+const listener = () => {
   let proto = config.https.enabled ? 'https' : 'http'
   console.log(`Listening on ${proto}://0.0.0.0:${port}`)
   console.log(`Security mode: ${config.securityMode}`)
@@ -169,8 +170,9 @@ if (config.https.enabled) {
     cert: fs.readFileSync(config.https.certificatePath),
     key: fs.readFileSync(config.https.keyPath),
   }
-
+  console.log("Starting server with proxy");
   https.createServer(options, app).listen(port, listener)
 } else {
+  console.log("Starting server without proxy")
   app.listen(port, listener)
 }

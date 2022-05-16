@@ -11,7 +11,8 @@
     "rootDir": "./src",
     "strict": false,
     "typeRoots": [
-      "./typings"
+      "./typings",
+      "./src"
     ],
     "esModuleInterop": true
   },

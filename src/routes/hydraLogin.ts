@@ -17,6 +17,12 @@ const kratos = new V0alpha2Api(
 console.log({config})
 
 
+declare module "express-session" {
+  interface SessionData{
+    hydraLoginState: string
+  }
+}
+
 const redirectToLogin = (req: Request, res: Response, next: NextFunction) => {
   if (!req.session) {
     next(Error('Unable to used express-session'))

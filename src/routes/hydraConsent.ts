@@ -5,7 +5,8 @@ import {
   ConsentRequestSession,
 } from '@oryd/hydra-client'
 import config from '../config'
-import urljoin from 'url-join'
+
+
 const hydraAdmin = new AdminApi(
   new Configuration({
     basePath: config.hydra.admin,
@@ -42,6 +43,12 @@ const createHydraSession = (
       patient_id: 'sidharth',
       aud: client_id
     },
+  }
+}
+
+declare module "express"{
+  interface Request{
+    csrfToken: () => string
   }
 }
 

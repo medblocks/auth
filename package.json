@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc && npm run css",
     "serve": "node lib/index.js",
-    "start": "npm run css && ts-node-dev --watch public,views --respawn src/index.ts",
+    "start": "pnpm run css && ts-node-dev --watch public,views --respawn src/index.ts",
     "test": "npm-run-all build",
     "format": "prettier --write src/**/*.ts",
     "check-format": "prettier --check src/**/*.ts",
@@ -39,6 +39,7 @@
     "@types/url-join": "^4.0.0",
     "autoprefixer": "^10.4.7",
     "axios": "^0.21.1",
+    "body-parser": "^1.20.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "csurf": "^1.11.0",
