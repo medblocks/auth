@@ -38,6 +38,7 @@ const settingsHandler = async (
       }
 
       // Render the data using a view (e.g. Jade Template):
+      console.log({flow: JSON.stringify(flow, null, 2)})
       res.render('settings', { ...flow, logoutUrl })
     })
     .catch(redirectOnSoftError(res, next, '/self-service/settings/browser'))
